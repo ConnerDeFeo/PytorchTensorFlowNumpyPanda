@@ -1,22 +1,14 @@
-import requests
 import pandas as pd
+import matplotlib.pyplot as plt
 
-# Step 1, get the data
-url = "https://archive-api.open-meteo.com/v1/archive"
+# Import the data
+df = pd.read_csv("data/rochester_weather.csv")
+df["date"] = pd.to_datetime(df["date"])
 
-params = {
-    "latitude": 43.1566,
-    "longitude": -77.6089,
-    "start_date": "2021-01-01",
-    "end_date": "2026-01-01",
-    "daily": ["temperature_2m_max", "temperature_2m_min", "precipitation_sum", "windspeed_10m_max"],
-    "timezone": "America/New_York"
-}
+# Create the target value
+df["windspeed_tomorrow"] = df["windspeed"].shift(-1)
+df = df.dropna()
 
-response = requests.get(url, params=params)
-data = response.json()
-
-df = pd.DataFrame(data["daily"])
-df.columns = ["date", "temp_max", "temp_min", "precipitation", "windspeed"]
-
-df.to_csv("data/rochester_weather.csv", index=False)
+# Plot the data to take a look at it
+plt.figure(figsize=(10, 30))
+plt.show()
