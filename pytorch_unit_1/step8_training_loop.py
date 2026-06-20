@@ -1,6 +1,9 @@
 import torch
 import torch.nn as nn
 
+# LEARED:
+# - Loop the training sequence over and over to make the model more accurate
+# - The rate that it learns decreases as it gets more accurtae becasue the gradient gets smaller
 layer = nn.Linear(2, 1)
 optimizer = torch.optim.SGD(layer.parameters(), lr=0.01)
 criterion = nn.MSELoss()
